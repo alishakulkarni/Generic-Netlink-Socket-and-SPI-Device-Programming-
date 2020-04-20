@@ -1,0 +1,88 @@
+Name - Alisha Kulkarni
+ASU ID - 1215311903
+
+--------------------------------------------------------------------------------------------------------------------------------
+This Folder contains the following files as per the requirement of the Assignment:
+
+-> main.c  To initiate the netlink connection and pass parameters from user space
+
+-> matrix_driver.h, matrix_driver.c  Implements the distance-matrix mechanism and stores the average distance of the last 5 readings
+
+-> hcsr.h
+
+-> IOinit.h,IOinit.c
+
+-> set_ip Script to set the IP address if needed
+
+-> run Script to run and transfer the files to Galileo
+
+-> Makefile  Compiles and links all the files
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+NOTE: Although the user is able to send the pin request to the kernel space via Netlink socket, I have fixed the trigger, echo and chip select pins as I was facing issues.
+trigger - 0
+echo - 9
+chip select - 8
+
+You can also choose between 2 patterns. 
+
+
+To run the code:
+
+Run the script files if needed first:
+* chmod 777 set_ip ----> ./set_ip
+* chmod 777 run ----> ./run
+
+Inside the Galileo:
+* insmod matrix_driver.ko
+
+Once insmod is successful,
+
+the user can request to START the distance measure - this leads to kthreads creation that run until STOP is called
+
+* ./main -s -m start
+
+Interrupt handler runs in the background and the speed of pattern varies depending on the distance
+
+* ./main -s -m stop 
+
+Kthread stops and Matrix switches off
+
+
+* ./main -l 0 (same as sample code) (To read the distance in cm)
+
+This gives the user the average distance.
+
+NOTE: ./main -l <group> can be called even before STOP. It is not dependent on the kthread stopping. If is is called before START, distance will be 0.
+
+
+* rmmod matrix_driver.ko
+
+
+I have provided screenshot in the Folder as well.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+*IMPORTANT NOTE: THIS CODE USES THE  SAMPLE CODE PROVIDED BY PROFESSOR/TA for GENERIC NETLINK.ANY SIMILARITY IN VARIABLE NAMES LIKE GMEM_DEVP IS BECAUSE OF THE SAME REASON.*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

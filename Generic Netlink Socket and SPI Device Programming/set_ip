@@ -1,0 +1,2 @@
+ifconfig enp1s0 192.168.1.6 netmask 255.255.0.0 down
+ifconfig enp1s0 192.168.1.6 netmask 255.255.0.0 up
